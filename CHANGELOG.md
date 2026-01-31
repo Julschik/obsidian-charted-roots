@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Sources dockable view stuck on "Loading sources..."** ([#241](https://github.com/banisterious/obsidian-charted-roots/pull/241), thanks @prentissw): The `renderSourcesList` function was passing the wrong arguments to the `SourceService` constructor, preventing the Sources view from loading.
 
+- **Media not rendering for filenames with commas** ([#238](https://github.com/banisterious/obsidian-charted-roots/issues/238), thanks @jeff962): Unquoted wikilinks containing commas (e.g., `[[Marvick, Jeanne.JPG]]`) were silently dropped because YAML splits the filename on the comma into separate array elements. Media parsing now rejoins these fragments to reconstruct the original filename.
+
 ---
 
 ## [0.20.0] - 2026-01-30
