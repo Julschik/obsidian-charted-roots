@@ -167,13 +167,11 @@ export class MediaRenderer {
 			linkStr = (link as { link: string }).link;
 		} else if (Array.isArray(link)) {
 			// Nested array from YAML parsing unquoted [[filename]] as [["filename"]]
-			// Recursively unwrap until we find a string
-			let unwrapped: unknown = link;
-			while (Array.isArray(unwrapped) && unwrapped.length > 0) {
-				unwrapped = unwrapped[0];
-			}
-			if (typeof unwrapped === 'string') {
-				linkStr = unwrapped;
+			// Commas in filenames cause YAML to split into multiple elements,
+			// e.g. [[Name, File.jpg]] → [["Name", " File.jpg"]]
+			const inner = link.length === 1 && Array.isArray(link[0]) ? link[0] as unknown[] : link;
+			if (inner.length > 0 && inner.every((el): el is string => typeof el === 'string')) {
+				linkStr = inner.map(s => s.trim()).join(', ');
 			} else {
 				return null;
 			}

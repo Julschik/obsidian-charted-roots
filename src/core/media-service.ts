@@ -81,6 +81,7 @@ export interface EntityMedia {
  *   - String: "[[file.jpg]]" → "[[file.jpg]]"
  *   - Link object: { link: "file.jpg" } → "[[file.jpg]]"
  *   - Nested array: [["file.jpg"]] → "[[file.jpg]]" (YAML parses unquoted [[]] as nested array)
+ *   - Nested array with commas in filename: [["Name", " File.jpg"]] → "[[Name, File.jpg]]"
  */
 export function normalizeMediaRef(item: unknown): string | null {
 	if (typeof item === 'string') {
@@ -96,14 +97,17 @@ export function normalizeMediaRef(item: unknown): string | null {
 	}
 
 	// Nested array from YAML parsing unquoted [[filename]] as [["filename"]]
+	// Commas in filenames cause YAML to split into multiple elements,
+	// e.g. [[Name, File.jpg]] → [["Name", " File.jpg"]]
 	if (Array.isArray(item)) {
-		let unwrapped: unknown = item;
-		while (Array.isArray(unwrapped) && unwrapped.length > 0) {
-			unwrapped = unwrapped[0];
-		}
-		if (typeof unwrapped === 'string') {
-			// Unwrapped string may or may not have brackets
-			return unwrapped.startsWith('[[') ? unwrapped : `[[${unwrapped}]]`;
+		// Unwrap one level of nesting if the first element is also an array
+		const inner = item.length === 1 && Array.isArray(item[0]) ? item[0] as unknown[] : item;
+
+		// If the innermost array has all-string elements, rejoin with comma
+		// to reconstruct filenames that YAML split on commas
+		if (inner.length > 0 && inner.every((el): el is string => typeof el === 'string')) {
+			const joined = inner.map(s => s.trim()).join(', ');
+			return joined.startsWith('[[') ? joined : `[[${joined}]]`;
 		}
 	}
 
