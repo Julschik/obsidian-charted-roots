@@ -4,44 +4,48 @@ Planning document for entity Profile Views feature.
 
 **Status:** 📋 Planning
 
-**Related:** [#239](https://github.com/banisterious/obsidian-charted-roots/discussions/239) (Control Center modularization), [#240](https://github.com/banisterious/obsidian-charted-roots/discussions/240) (Dockable sidebar views)
+**Related:** [#239](https://github.com/banisterious/obsidian-charted-roots/discussions/239) (Control Center modularization), [#240](https://github.com/banisterious/obsidian-charted-roots/discussions/240) (Dockable sidebar views), [#242](https://github.com/banisterious/obsidian-charted-roots/discussions/242) (Profile Views discussion)
 
 ---
 
 ## Overview
 
-Profile Views are entity-specific `ItemView` subclasses that provide comprehensive, scrollable views for deep work on a single entity (person, place, event, source, organization). Each entity type has its own registered view with a distinct display name and icon. Identity fields appear at the top, followed by collapsible sections for related data — all inline and editable.
+The Profile View is a single `ItemView` that provides a comprehensive, focused workspace for deep work on any entity (person, place, event, source, organization). It auto-syncs to the active note, rendering entity-type-specific sections with a sticky identity header and collapsible detail sections below.
 
 **Motivation:**
 - Current workflows are entity-type-centric (People tab, Events tab, Sources tab), but real user workflows cut across entity types — adding a birth event to a person requires jumping between People, Events, and Sources, losing context along the way
 - The v0.20.0 dockable Browser views solve the window management problem but preserve the context-switching problem
-- Profile Views keep all related data visible together in collapsible sections, enabling deep work on a single entity without tab-hopping
-- Separate view types per entity enable natural multitasking — a person profile docked alongside an event profile, each clearly labeled
+- A Profile View keeps all related data visible together in collapsible sections, enabling deep work on a single entity without tab-hopping
 
 ---
 
 ## Architecture
 
-### View types
+### Single view type with auto-sync
 
-Five registered `ItemView` subclasses, one per entity type:
+One registered `ItemView` (`VIEW_TYPE_ENTITY_PROFILE`) that:
+- **Auto-syncs** to the active note — when the user switches to a different entity note, the Profile View updates to show that entity's profile
+- **Detects entity type** from frontmatter (`cr_type` or person detection) and renders the appropriate sections
+- **Supports multiple instances** — unlike Browser views which enforce single-instance, the Profile View allows multiple docked instances for side-by-side work
+- **Pin/unpin toggle** — freezes the current entity to stop auto-syncing; unpinned instances follow the active note
 
-| View type | Display name | Icon | Sections |
-|-----------|-------------|------|----------|
-| `PersonProfileView` | Person profile | `user` | Identity → Family → Events → Sources → Media → Data Quality |
-| `PlaceProfileView` | Place profile | `map-pin` | Identity → Events at location → Sources → Media → Map preview |
-| `EventProfileView` | Event profile | `calendar` | Identity → Participants → Sources → Media → Place link |
-| `SourceProfileView` | Source profile | `book-open` | Identity → Referenced facts → Persons cited → Media |
-| `OrganizationProfileView` | Organization profile | `building` | Identity → Members → Events → Sources → Media |
+This approach avoids tab sprawl from five separate view types and matches Obsidian's existing conventions (Outline, Backlinks, and Properties panels all auto-sync to the active note).
 
-### Shared infrastructure
+### Layout: hybrid with sticky header
 
-All five views extend shared base utilities that provide:
-- Collapsible section rendering with chevron toggle
-- Breadcrumb bar rendering and navigation history
-- State persistence (entity cr_id, expanded/collapsed sections)
-- Debounced refresh on vault changes (2s)
-- Scroll-to-section support
+The view uses a hybrid layout:
+- **Sticky identity header** — always visible at the top regardless of scroll position. Shows entity name, key metadata (dates, type badges), avatar thumbnail (for people), and section jump links. The user always knows which entity they're viewing.
+- **Scrollable section area** — collapsible sections stacked vertically below the header. Each section can be expanded or collapsed independently. Collapsed sections show a compact summary (e.g., "12 events", "4 sources").
+
+### Entity-type sections
+
+| Entity type | Sections |
+|-------------|----------|
+| Person | Identity → Family → Events → Sources → Media → Data Quality |
+| Place | Identity → Events at location → Sources → Media → Map preview |
+| Event | Identity → Participants → Sources → Media → Place link |
+| Source | Identity → Referenced facts → Persons cited → Media |
+| Organization | Identity → Members → Events → Sources → Media |
 
 ### Section renderers
 
@@ -53,25 +57,28 @@ Section renderers are standalone functions (e.g., `renderProfileFamilySection()`
 
 ### Entry points
 
-- **Context menu** on entity notes: "Open person profile", "Open place profile", etc.
-- **Browser views**: Click-through from People/Places/Events/Sources/Organizations Browser views
-- **Command palette**: "Open person profile", "Open place profile", etc.
+- **Command palette**: "Charted Roots: Open entity profile" — opens/reveals the Profile View in the sidebar. Once docked, it persists across sessions and auto-syncs to the active note.
+- **Context menu**: Right-click a note in the file tree or editor → "Open profile" — opens the Profile View and navigates to that entity
+- **Control Center**: A button in the Dashboard tab or header area that opens the Profile View. Always accessible regardless of which tab is active.
+- **Browser view row action**: A profile icon on each entity row in the dockable Browser views (People, Events, etc.). Click the entity name to open their note (existing behavior); click the profile icon to open/navigate the Profile View to that entity.
+- **Auto-sync** — once docked, the Profile View follows the active note automatically (when unpinned)
+
+### Pin/unpin
+
+- **Unpinned** (default): The view follows the active note. This is the typical single-pane usage — dock the Profile View in the sidebar and it updates as you navigate.
+- **Pinned**: The view is frozen on a specific entity. Pin a profile to keep it visible, then continue navigating — the pinned instance stays while unpinned instances (or new instances) follow the active note.
 
 ### Cross-entity navigation
 
-Clicking a related entity of a **different type** (e.g., a source in a Person profile) opens that entity's Profile View. Because each entity type has its own view type, this naturally opens in a separate pane rather than replacing the current view. This enables the side-by-side workflows that motivated this feature.
-
-### Same-type navigation
-
-Clicking a related entity of the **same type** (e.g., a child in a Person profile) navigates the current view in-place with breadcrumb history. Modifier-click (Ctrl/Cmd) opens a new instance instead.
+Clicking a related entity (e.g., a source link in a Person profile) navigates the Profile View in-place to that entity. A "pop-out" action (modifier-click or icon button) opens a new pinned Profile View pane for side-by-side work.
 
 ### Breadcrumb bar
 
-Shows navigation path within a single view instance (e.g., "John Smith → Mary Smith → Elizabeth Smith"). Clicking a breadcrumb navigates back.
+Shows navigation path within a single view instance (e.g., "John Smith → Birth Event → Springfield"). Clicking a breadcrumb navigates back. Breadcrumb history is per-instance and persists across sessions.
 
 ### Relationship to existing views
 
-Profile Views are an **additional option**, not a replacement for existing behavior. Users who prefer working in raw markdown continue to do so. Browser views preserve their current "open note" behavior, with Profile Views available as an alternative entry point.
+The Profile View is an **additional option**, not a replacement for existing behavior. Users who prefer working in raw markdown continue to do so. Browser views preserve their current "open note" behavior, with the Profile View available as a complementary workspace.
 
 ---
 
@@ -90,7 +97,7 @@ Follows the Obsidian Properties UI pattern:
 
 The existing codebase provides strong building blocks:
 
-| Component | Location | Use in Profile Views |
+| Component | Location | Use in Profile View |
 |-----------|----------|---------------------|
 | `FamilyGraphService` | `src/core/family-graph.ts` | Load person, resolve family relationships |
 | `PlaceGraphService` | `src/core/place-graph.ts` | Load/resolve place entities |
@@ -111,23 +118,29 @@ The existing codebase provides strong building blocks:
 
 ## CSS naming
 
-- Shared: `cr-profile`, `cr-profile__section`, `cr-profile__section-header`, `cr-profile__breadcrumb`
-- Entity-specific: `cr-person-profile`, `cr-place-profile`, `cr-event-profile`, `cr-source-profile`, `cr-org-profile`
-- Section content: `cr-profile__identity`, `cr-profile__family`, `cr-profile__events`, `cr-profile__sources`, `cr-profile__media`, `cr-profile__data-quality`
+- View container: `cr-profile`
+- Sticky header: `cr-profile__header`
+- Pin toggle: `cr-profile__pin-toggle`
+- Breadcrumb: `cr-profile__breadcrumb`
+- Section shared: `cr-profile__section`, `cr-profile__section-header`, `cr-profile__section-summary`
+- Section content: `cr-profile__identity`, `cr-profile__family`, `cr-profile__events`, `cr-profile__sources`, `cr-profile__media`, `cr-profile__data-quality`, `cr-profile__participants`, `cr-profile__members`, `cr-profile__map-preview`
 
 ---
 
 ## Implementation phases
 
-### Phase 1 — Read-only Profile Views
+### Phase 1 — Read-only Profile View
 
-- Implement shared profile view infrastructure (collapsible sections, breadcrumb, state persistence, debounced refresh)
-- Register all five view types
-- Implement section renderers for each entity type (read-only display)
+- Register single `ProfileView` ItemView with auto-sync to active note
+- Implement entity type detection from frontmatter
+- Implement sticky identity header with entity name, metadata, avatar
+- Implement collapsible section infrastructure with chevron toggle and compact summaries
+- Implement pin/unpin toggle for freezing on a specific entity
+- Implement section renderers for all entity types (read-only display)
 - Reuse existing components: `renderPersonTimeline()` for events, `MediaService` for thumbnails, `EvidenceService` for data quality
-- Click-through navigation between entity profiles
+- Breadcrumb navigation for in-place entity traversal
 - Context menu and command palette entry points
-- State persistence (which entity, which sections expanded)
+- State persistence (pinned entity, expanded sections, breadcrumb history)
 
 ### Phase 2 — Inline editing
 
@@ -139,8 +152,9 @@ The existing codebase provides strong building blocks:
 
 ### Phase 3 — Polish and integration
 
-- Mini table-of-contents / section jump links in header for long profiles
+- Section jump links in sticky header for quick navigation to sections
 - Browser view "Open profile" integration (click row → open profile)
+- Pop-out action for cross-entity links (open new pinned pane)
 - Keyboard navigation between sections
 - Mobile-responsive layout (collapse sections by default, touch-friendly targets)
 - Performance optimization (lazy-render sections on expand)
@@ -151,11 +165,11 @@ The existing codebase provides strong building blocks:
 
 | Decision | Choice | Rationale |
 |----------|--------|-----------|
-| View registration | Separate view type per entity | Clear tab labels, natural multitasking, consistent with existing plugin pattern |
-| Shared code | Base class or shared utilities | Avoid duplication for sections, breadcrumb, state persistence |
-| Section layout | Vertical scroll with collapsible sections | Matches Obsidian Properties pattern, works on all screen sizes |
-| Section renderers | Standalone functions | Reusable, testable, consistent with existing tab renderer pattern |
+| View registration | Single view type, multi-instance | Avoids tab sprawl from 5 view types; matches Obsidian Outline/Backlinks pattern |
+| Active note sync | Auto-sync with pin/unpin | Familiar Obsidian UX; pinning enables side-by-side without separate view types |
+| Layout | Sticky identity header + scrollable collapsible sections | Always know which entity you're viewing; expand only the sections you need |
+| Section renderers | Standalone functions per section | Reusable, testable, consistent with existing tab renderer pattern |
 | Save model | Save on blur / on picker confirm | Matches Obsidian conventions, avoids crash-risk from deferred saves |
 | Browser relationship | Profile is additional option, not replacement | Preserves existing workflow for users who prefer raw markdown |
-| Cross-entity links | Open in separate pane (different view type) | Enables side-by-side workflows that motivated this feature |
-| Same-entity links | Navigate in-place with breadcrumb | Avoids proliferating tabs of the same type |
+| Cross-entity links | Navigate in-place; pop-out for side-by-side | Simple default; explicit action for multi-pane |
+| Multiple instances | Allowed (not single-instance) | Enables side-by-side via pinned panes |
