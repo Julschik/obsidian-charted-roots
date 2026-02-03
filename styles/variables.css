@@ -28,6 +28,12 @@
   --cr-border-width: 1px;
   --cr-border-radius: 6px;
 
+  /* Border radius scale - aligns with spacing scale */
+  --cr-radius-xs: 4px;   /* Small buttons, tight items (90 usages in codebase) */
+  --cr-radius-sm: 6px;   /* Default - matches --cr-border-radius (103 usages) */
+  --cr-radius-md: 8px;   /* Medium panels, cards (91 usages) */
+  --cr-radius-lg: 12px;  /* Large containers (11 usages) */
+
   /* Family Chart View - customizable via Style Settings plugin */
   --cr-fcv-female-color: rgb(196, 138, 146);
   --cr-fcv-male-color: rgb(120, 159, 172);
