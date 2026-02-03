@@ -8,7 +8,7 @@
  * GitHub: https://github.com/banisterious/obsidian-charted-roots
  *
  * BUILD INFORMATION:
- * - Generated: 2026-01-30 22:14:44 UTC
+ * - Generated: 2026-02-03 10:26:15 UTC
  * - Components: 44 files
  * - Build System: Node.js CSS Build Script v1.0.0
  *
@@ -377,7 +377,7 @@ settings:
    COMPONENT: BASE.CSS
    ========================================================================== */
 
-/* Component Size: 87 lines, 1.22 KB */
+/* Component Size: 97 lines, 1.46 KB */
 
 /* Base Charted Roots styles */
 
@@ -464,6 +464,16 @@ settings:
   margin-top: 1em;
   padding-top: 1em;
   border-top: 1px solid var(--background-modifier-border);
+}
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+
+@keyframes cr-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 
@@ -6400,7 +6410,7 @@ settings:
    COMPONENT: ENTITY-CREATE-MODALS.CSS
    ========================================================================== */
 
-/* Component Size: 1094 lines, 22.41 KB */
+/* Component Size: 1084 lines, 22.3 KB */
 
 /* ==========================================================================
    PERSON PICKER MODAL
@@ -6739,13 +6749,7 @@ settings:
   border: 3px solid var(--background-modifier-border);
   border-top-color: var(--interactive-accent);
   border-radius: 50%;
-  animation: crc-spinner-rotate 1s linear infinite;
-}
-
-@keyframes crc-spinner-rotate {
-  to {
-    transform: rotate(360deg);
-  }
+  animation: cr-spin 1s linear infinite;
 }
 
 .crc-picker-loading__text {
@@ -7399,11 +7403,7 @@ settings:
   bottom: 0;
   margin-top: var(--size-4-4);
   padding: var(--size-4-3) 0;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    var(--modal-background) 20%
-  );
+  background: linear-gradient(to bottom, transparent 0%, var(--modal-background) 20%);
   z-index: 10;
 }
 
@@ -7503,7 +7503,7 @@ settings:
    COMPONENT: PLACE-MODALS.CSS
    ========================================================================== */
 
-/* Component Size: 1406 lines, 27.04 KB */
+/* Component Size: 1400 lines, 26.96 KB */
 
 /* ==========================================================================
    CREATE PLACE MODAL
@@ -8681,13 +8681,7 @@ settings:
   border: 2px solid var(--background-modifier-border);
   border-top-color: var(--interactive-accent);
   border-radius: 50%;
-  animation: cr-lookup-spin 0.8s linear infinite;
-}
-
-@keyframes cr-lookup-spin {
-  to {
-    transform: rotate(360deg);
-  }
+  animation: cr-spin 0.8s linear infinite;
 }
 
 /* Error state */
@@ -8918,7 +8912,7 @@ settings:
    COMPONENT: MEDIA-MODALS.CSS
    ========================================================================== */
 
-/* Component Size: 1928 lines, 36.72 KB */
+/* Component Size: 1922 lines, 36.65 KB */
 
 /* ==========================================================================
    Media Picker Modal
@@ -10105,13 +10099,7 @@ settings:
   border: 3px solid var(--background-modifier-border);
   border-top-color: var(--interactive-accent);
   border-radius: 50%;
-  animation: crc-spin 0.8s linear infinite;
-}
-
-@keyframes crc-spin {
-  to {
-    transform: rotate(360deg);
-  }
+  animation: cr-spin 0.8s linear infinite;
 }
 
 /* Empty state */
@@ -13615,7 +13603,7 @@ settings:
    COMPONENT: CLEANUP-WIZARD.CSS
    ========================================================================== */
 
-/* Component Size: 2206 lines, 40.82 KB */
+/* Component Size: 2197 lines, 40.71 KB */
 
 /* ==========================================================================
    CLEANUP WIZARD MODAL
@@ -13695,21 +13683,12 @@ settings:
 }
 
 .crc-cleanup-spinner {
-  animation: crc-spin 1s linear infinite;
+  animation: cr-spin 1s linear infinite;
 }
 
 .crc-cleanup-spinner svg {
   width: 16px;
   height: 16px;
-}
-
-@keyframes crc-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 /* Tile grid (5x2) */
@@ -15778,7 +15757,7 @@ settings:
 }
 
 .crc-cleanup-batch-progress-spinner {
-  animation: crc-spin 1s linear infinite;
+  animation: cr-spin 1s linear infinite;
 }
 
 .crc-cleanup-batch-progress-spinner svg {
@@ -16738,7 +16717,7 @@ settings:
    COMPONENT: FAMILY-CHART-VIEW.CSS
    ========================================================================== */
 
-/* Component Size: 1282 lines, 30.12 KB */
+/* Component Size: 1276 lines, 30.05 KB */
 
 /**
  * Family Chart View Styles
@@ -17468,18 +17447,12 @@ settings:
   border: 3px solid var(--background-modifier-border);
   border-top-color: var(--interactive-accent);
   border-radius: 50%;
-  animation: cr-fcv-spin 0.8s linear infinite;
+  animation: cr-spin 0.8s linear infinite;
 }
 
 .cr-family-chart-loading__text {
   font-size: var(--font-ui-small);
   color: var(--text-muted);
-}
-
-@keyframes cr-fcv-spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 /* ============================================================
@@ -37317,32 +37290,32 @@ body:has(.cr-media-linker) .suggestion-container {
    ========================================================================== */
 
 /*
- * Build completed: 2026-01-30 22:14:45 UTC
+ * Build completed: 2026-02-03 10:26:15 UTC
  * Components processed: 44
- * Total lines: 36898
- * Total size: 733.1 KB
- * Build duration: 0.93 seconds
+ * Total lines: 36871
+ * Total size: 732.91 KB
+ * Build duration: 0.02 seconds
  *
  * Component breakdown:
  * - variables.css: 56 lines, 1.61 KB
  * - style-settings.css: 281 lines, 6.81 KB
- * - base.css: 87 lines, 1.22 KB
+ * - base.css: 97 lines, 1.46 KB
  * - layout.css: 22 lines, 0.25 KB
  * - settings.css: 131 lines, 3.53 KB
  * - control-center.css: 5747 lines, 106.74 KB
- * - entity-create-modals.css: 1094 lines, 22.41 KB
- * - place-modals.css: 1406 lines, 27.04 KB
- * - media-modals.css: 1928 lines, 36.72 KB
+ * - entity-create-modals.css: 1084 lines, 22.3 KB
+ * - place-modals.css: 1400 lines, 26.96 KB
+ * - media-modals.css: 1922 lines, 36.65 KB
  * - import-export-wizard.css: 2187 lines, 41.08 KB
  * - staging-manager.css: 555 lines, 11.21 KB
- * - cleanup-wizard.css: 2206 lines, 40.82 KB
+ * - cleanup-wizard.css: 2197 lines, 40.71 KB
  * - duplicate-detection.css: 163 lines, 2.82 KB
  * - tree-statistics.css: 41 lines, 0.6 KB
  * - validation.css: 79 lines, 1.41 KB
  * - find-on-canvas.css: 114 lines, 1.97 KB
  * - folder-scan.css: 155 lines, 2.56 KB
  * - relationship-calculator.css: 302 lines, 5.21 KB
- * - family-chart-view.css: 1282 lines, 30.12 KB
+ * - family-chart-view.css: 1276 lines, 30.05 KB
  * - family-chart-export.css: 699 lines, 14.62 KB
  * - report-wizard.css: 888 lines, 19.4 KB
  * - data-quality.css: 1393 lines, 27.56 KB
