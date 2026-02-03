@@ -69,7 +69,7 @@
   gap: 8px;
   padding: 12px 16px;
   background: var(--background-secondary);
-  border-radius: 8px;
+  border-radius: var(--cr-radius-md);
   margin-bottom: 16px;
   font-size: 13px;
   color: var(--text-muted);
@@ -187,7 +187,7 @@
 .crc-cleanup-tile-badge {
   font-size: 10px;
   padding: 3px 6px;
-  border-radius: 4px;
+  border-radius: var(--cr-radius-xs);
   margin-top: 6px;
   display: inline-flex;
   align-items: center;
@@ -368,7 +368,7 @@
   text-align: center;
   padding: 32px;
   background: rgba(74, 222, 128, 0.1);
-  border-radius: 12px;
+  border-radius: var(--cr-radius-lg);
 }
 
 .crc-cleanup-no-issues-icon {
@@ -398,7 +398,7 @@
   text-align: center;
   padding: 32px;
   background: rgba(74, 222, 128, 0.1);
-  border-radius: 12px;
+  border-radius: var(--cr-radius-lg);
 }
 
 .crc-cleanup-step-complete-icon {
@@ -430,7 +430,7 @@
   color: var(--text-muted);
   font-size: 13px;
   background: var(--background-secondary);
-  border-radius: 8px;
+  border-radius: var(--cr-radius-md);
 }
 
 /* Preview table */
@@ -441,7 +441,7 @@
 
 .crc-cleanup-preview-table {
   border: 1px solid var(--background-modifier-border);
-  border-radius: 8px;
+  border-radius: var(--cr-radius-md);
   overflow: hidden;
 }
 
@@ -452,7 +452,7 @@
   gap: 8px;
   padding: 12px 16px;
   background: rgba(var(--interactive-accent-rgb), 0.1);
-  border-radius: 8px;
+  border-radius: var(--cr-radius-md);
   margin-top: 16px;
   font-size: 13px;
   color: var(--text-muted);
@@ -612,7 +612,7 @@
   justify-content: center;
   padding: 20px 28px;
   background: var(--background-secondary);
-  border-radius: 12px;
+  border-radius: var(--cr-radius-lg);
   border: 1px solid var(--background-modifier-border);
   min-width: 100px;
 }
@@ -656,7 +656,7 @@
   justify-content: center;
   padding: 12px 16px;
   background: var(--background-secondary);
-  border-radius: 8px;
+  border-radius: var(--cr-radius-md);
   border: 1px solid var(--background-modifier-border);
   min-width: 80px;
   flex: 1;
@@ -700,7 +700,7 @@
 .crc-cleanup-category-card {
   margin-bottom: 8px;
   border: 1px solid var(--background-modifier-border);
-  border-radius: 8px;
+  border-radius: var(--cr-radius-md);
   overflow: hidden;
 }
 
@@ -739,7 +739,7 @@
 
 .crc-cleanup-category-badge {
   padding: 3px 10px;
-  border-radius: 12px;
+  border-radius: var(--cr-radius-lg);
   font-size: 12px;
   font-weight: 600;
   background: var(--background-modifier-border);
@@ -784,7 +784,7 @@
   align-items: flex-start;
   gap: 10px;
   padding: 8px;
-  border-radius: 6px;
+  border-radius: var(--cr-radius-sm);
   background: var(--background-secondary);
 }
 
@@ -881,7 +881,7 @@
   align-items: flex-start;
   gap: 10px;
   padding: 10px 12px;
-  border-radius: 6px;
+  border-radius: var(--cr-radius-sm);
   background: var(--background-secondary);
   border: 1px solid var(--background-modifier-border);
 }
@@ -1009,7 +1009,7 @@
   padding: 16px;
   margin-bottom: 16px;
   background: rgba(var(--color-green-rgb), 0.1);
-  border-radius: 8px;
+  border-radius: var(--cr-radius-md);
 }
 
 .crc-cleanup-step-partial-complete .crc-cleanup-step-complete-icon {
@@ -1064,7 +1064,7 @@
   max-height: 350px;
   overflow-y: auto;
   border: 1px solid var(--background-modifier-border);
-  border-radius: 6px;
+  border-radius: var(--cr-radius-sm);
   margin-top: 12px;
 }
 
@@ -1269,7 +1269,7 @@
   padding: 10px 12px;
   margin-top: 12px;
   background: rgba(var(--color-yellow-rgb), 0.1);
-  border-radius: 6px;
+  border-radius: var(--cr-radius-sm);
   font-size: 12px;
   color: var(--text-muted);
 }
@@ -1324,7 +1324,7 @@
   max-height: 200px;
   overflow-y: auto;
   border: 1px solid var(--background-modifier-border);
-  border-radius: 6px;
+  border-radius: var(--cr-radius-sm);
   padding: 8px;
   background: var(--background-secondary);
 }
@@ -1391,7 +1391,7 @@
 .crc-cleanup-geocode-progress-bar-container {
   height: 8px;
   background: var(--background-modifier-border);
-  border-radius: 4px;
+  border-radius: var(--cr-radius-xs);
   overflow: hidden;
   margin-bottom: 12px;
 }
@@ -1399,7 +1399,7 @@
 .crc-cleanup-geocode-progress-bar {
   height: 100%;
   background: var(--interactive-accent);
-  border-radius: 4px;
+  border-radius: var(--cr-radius-xs);
   transition: width 0.3s ease;
 }
 
@@ -1439,7 +1439,7 @@
   max-height: 200px;
   overflow-y: auto;
   border: 1px solid var(--background-modifier-border);
-  border-radius: 6px;
+  border-radius: var(--cr-radius-sm);
   padding: 8px;
   background: var(--background-secondary);
   margin-bottom: 16px;
@@ -1511,7 +1511,7 @@
   flex-direction: column;
   align-items: center;
   padding: 16px 24px;
-  border-radius: 8px;
+  border-radius: var(--cr-radius-md);
   background: var(--background-secondary);
 }
 
@@ -1557,7 +1557,7 @@
   max-height: 250px;
   overflow-y: auto;
   border: 1px solid var(--background-modifier-border);
-  border-radius: 6px;
+  border-radius: var(--cr-radius-sm);
   margin-bottom: 16px;
 }
 
@@ -1637,7 +1637,7 @@
   gap: 8px;
   padding: 10px 12px;
   background: var(--background-secondary);
-  border-radius: 6px;
+  border-radius: var(--cr-radius-sm);
   font-size: 12px;
   color: var(--text-muted);
   margin-bottom: 16px;
@@ -2173,7 +2173,7 @@
 .crc-cleanup-batch-progress-bar-container {
   height: 8px;
   background: var(--background-modifier-border);
-  border-radius: 4px;
+  border-radius: var(--cr-radius-xs);
   overflow: hidden;
   margin-bottom: 12px;
 }
@@ -2181,7 +2181,7 @@
 .crc-cleanup-batch-progress-bar {
   height: 100%;
   background: var(--interactive-accent);
-  border-radius: 4px;
+  border-radius: var(--cr-radius-xs);
   transition: width 0.2s ease;
 }
 
